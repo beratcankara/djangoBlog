@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body %}
+
+<div class="row">
+  {% for article in publishedArticles %}
+    <div class="col-md-4 mb-3">
+      <div class="card" onclick="window.location='/dashboard/article/{{ article.id }}';">
+        <div class="card-body" style="max-height: 200px; min-height: 200px; display: flex; flex-direction: column;">
+          <h5 class="card-title">{{ article.title }}</h5>
+          <div style="flex-grow: 1;"></div>
+          <p class="card-author" style="text-align: right; color: #777777; font-style: italic;">author: {{ article.author }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+
+      
+<div class="row">
+  {% for article in articleList %}
+    <div class="col-md-3 mb-3">
+      <div class="card" onclick="window.location='/dashboard/article/{{ article.articleId }}';">
+        <div class="card-body" style="max-height: 200px; min-height: 200px; display: flex; flex-direction: column;">
+          <h5 class="card-title">{{ article.articleTitle }}</h5>
+          <div style="flex-grow: 1;"></div>
+          <p class="card-author" style="text-align: right; color: #777777; font-style: italic;">author: {{ article.articleAuthor }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

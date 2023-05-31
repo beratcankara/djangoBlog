@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card" style="margin-bottom: 50px;">
+        <div class="card-body">
+          <h1 class="card-title text-center mb-4">Yazıyı Düzenle</h1>
+          <form method="POST" >
+            {% csrf_token %}
+            {{article.media}}
+            <div class="mb-3">
+              <label for="title" class="form-label">Başlık</label>
+              <input type="text" class="form-control" id="title" name="title" placeholder="Başlık" value="{{article.instance.title}}" >
+            </div>
+            <div class="mb-3">
+              <label for="content" class="form-label">İçerik</label>
+              {{ article.content|safe }}
+              <script>
+                CKEDITOR.replace('content', {
+                  // CKEditor ayarları buraya eklenebilir
+                });
+              </script>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    blockquote {
+      margin: 0;
+      padding: 10px 20px;
+      border-left: 2px solid #ccc;
+      background-color: #f8f8f8;
+      font-style: italic;
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.0/css/bootstrap.min.css">
+  <title>Articles</title>
+</head>
+{% block body %}
+<body>
+  <main>
+    <section class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 offset-md-2">
+            <h1 class="text-center">{{article.title}}</h1>
+            <p class="text-center text-muted">Published on {{article.created_date}}</p>
+              <p class="mb-0">"{{article.content|safe}}"</p>
+              <footer class="blockquote-footer">{{article.author}}</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-light py-3">
+    <div class="container">
+      <p class="text-center text-muted">&copy; 2023 Berat Can Kara's Blog</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.5.0/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock body %}
+</html>

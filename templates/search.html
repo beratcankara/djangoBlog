@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="row">
+  {% if articles %}
+    {% for article in articles %}
+      <div class="col-md-4 mb-3">
+        <div class="card" onclick="window.location='/dashboard/article/{{ article.id }}';">
+          <div class="card-body" style="max-height: 200px; min-height: 200px; display: flex; flex-direction: column;">
+            <h5 class="card-title">{{ article.title }}</h5>
+            <div style="flex-grow: 1;"></div>
+            <p class="card-author" style="text-align: right; color: #777777; font-style: italic;">author: {{ article.author }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Böyle bir sonuç bulunamadı.</p>
+  {% endif %}
+</div>
+{% endblock %}
