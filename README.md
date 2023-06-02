@@ -33,7 +33,7 @@ Projenin çalışması için aşağıdaki gereksinimlere ihtiyacınız vardır:
 1. Projeyi klonlayın:
 
    ```bash
-   git clone [https://github.com/kullanici_adi/blog-projesi.git](https://github.com/beratcankara/djangoBlog)
+   git clone https://github.com/beratcankara/djangoBlog
 Proje dizinine gidin:
 
   `bash
