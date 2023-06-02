@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .forms import ArticleForm
-from .models import Article
+from .forms import ArticleForm, CommentForm
+from .models import Article, Comment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -83,13 +83,36 @@ def publishArticle(request, article_id):
         dashboard(request)
 
     return redirect('dashboard')
-
+@login_required
+def addComment(request,form,article):
+    comment = form.save(commit=False)
+    comment.article = article
+    comment.user = request.user
+    comment.save()
+    
 def showArticle(request,article_id):
     article = Article.objects.filter(id=article_id).first()
+    comments = article.comments.all()
     context={
         "article":article
     }
-    return render(request,"article.html",context)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid() and request.user.is_authenticated:
+            addComment(request,form,article)
+            return redirect('showArticle', article_id=article_id)
+        else:
+            messages.error(request,"Lütfen mesaj atmak için giriş yapınız.")
+            
+    else:
+        form = CommentForm()
+    
+    context = {
+        'article': article,
+        'comments': comments,
+        'form': form,
+    }
+    return render(request, 'article.html', context)
 
 def search(request):
     query = request.GET.get('q')

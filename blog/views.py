@@ -1,7 +1,9 @@
-import json
 import random
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 import requests
+from articles.forms import Comment, CommentForm
+from django.contrib.auth.decorators import login_required
 
 from articles.models import Article
 def getArticleData():
@@ -32,3 +34,22 @@ def index(request):
                "publishedArticles":publishedArticles}
     return render(request, "index.html", context)
 
+@login_required
+def deleteComment(request, commentId):
+    comment = get_object_or_404(Comment, id=commentId)
+    # Yorumu silme işlemini gerçekleştirin
+    comment.delete()
+    # Silme işleminden sonra yapılacak işlemi belirleyin
+    return redirect('article')  # Örnek olarak yorumların bulunduğu sayfaya yönlendirme yapabilirsiniz
+
+@login_required
+def editComment(request, commentId):
+    comment = get_object_or_404(Comment, id=commentId)
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        form.save()
+        return redirect("index")
+    else:
+        form = CommentForm(instance=comment)
+        context={"form":form}
+    return render(request,"editComment.html",context)

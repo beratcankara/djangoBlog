@@ -1,22 +1,18 @@
 {% extends 'layout.html' %}
+{% load static %}
+
+{% block body %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
-    blockquote {
-      margin: 0;
-      padding: 10px 20px;
-      border-left: 2px solid #ccc;
-      background-color: #f8f8f8;
-      font-style: italic;
-    }
-  </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/comments.css' %}">
+  <script src="{% static 'scripts/deleteComment.js' %}"></script>
+
   <title>Articles</title>
 </head>
-{% block body %}
 <body>
   <main>
     <section class="py-5">
@@ -33,7 +29,60 @@
       </div>
     </section>
   </main>
+  <div class="card" style="margin-bottom: 50px;">
+    <div class="card-body">
+      <h1 class="card-title text-center mb-4">Yorum Yaz</h1>
+      <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.media }}
+        <div class="form-group">
+          <label for="body" class="form-label">İçerik</label>
+          <div class="mb-1">
+            <textarea class="form-control" id="body" name="body" rows="10"></textarea>
+            <script>
+              CKEDITOR.replace('body', {
+                // CKEditor ayarları buraya eklenebilir
+              });
+            </script>
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div id="comments">
+    <h1>Comments</h1>
+    {% for comment in comments %}
+    <div class="card-body card mb-2">
+      <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex">
+          <img src="https://avatars0.githubusercontent.com/u/33479836?v=4" alt="" class="rounded-circle" width="40" height="40">
+          <div class="ml-2">
+            <h4>{{ comment.user.username }}</h4>
+            <span>{{ comment.created_at }}</span>
+            <br>
+            <p>{{ comment.body|safe }}</p>
+          </div>
+        </div>
+        <form method="POST">
+          {% csrf_token %}
 
+        <div class="d-flex align-items-center">
+            <div class="btn-group" role="group" aria-label="Sil ve Düzenle">
+              <button type="submit" id="deleteComment" data-comment-id={{comment.id}}  class="btn btn-danger" onclick="deleteComment({{ comment.id }})">Sil</button>
+              <a href="/editComment/{{comment.id}}"><button type="button" class="btn btn-secondary">Düzenle</button></a>
+            </div>
+        </div>
+      </form>
+      </div>
+    </div>    
+    {% endfor %}
+  </div>
+  
+  
   <footer class="bg-light py-3">
     <div class="container">
       <p class="text-center text-muted">&copy; 2023 Berat Can Kara's Blog</p>
@@ -44,3 +93,4 @@
 </body>
 {% endblock body %}
 </html>
+
